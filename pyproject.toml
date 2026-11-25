@@ -4,12 +4,16 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "celery>=5.4",
+    "dj-database-url>=2.2",
     "django>=6.0",
     "django-ninja>=1.6",
+    "gunicorn>=23.0",
+    "psycopg[binary]>=3.2",
     "pydantic>=2.0",
     "python-decouple>=3.8",
     "python-ulid>=3.0",
     "svcs>=25.1",
+    "whitenoise>=6.8",
 ]
 
 [dependency-groups]

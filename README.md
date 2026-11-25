@@ -53,6 +53,14 @@ uv run python src/manage.py runserver
 
 Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and sign in with the superuser credentials you created. The dashboard and write endpoints require an authenticated session.
 
+## Deploy on Render
+
+The repository includes a Render Blueprint in `render.yaml`. To deploy, create a **Blueprint** in the [Render dashboard](https://dashboard.render.com/blueprints) and select this repository. Render will provision the web service and PostgreSQL database, apply migrations, collect static files, and start Gunicorn.
+
+After the first successful deploy, open the web service's Shell in Render and run `uv run python src/manage.py createsuperuser` to create the dashboard login.
+
+The configured free plan is suitable for a public preview, not production: free web services can sleep when idle, and free PostgreSQL databases expire after 30 days. Choose paid plans for persistent production data and an always-on service. After Render finishes the first deploy, replace the Public demo entry at the top with the service URL shown in the Render dashboard.
+
 ## API
 
 The OpenAPI explorer is available at `/api/docs` while the server is running.

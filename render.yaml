@@ -1,0 +1,31 @@
+databases:
+  - name: trace-supply-db
+    databaseName: trace_supply
+    user: trace_supply
+    plan: free
+
+services:
+  - type: web
+    name: trace-supply
+    runtime: python
+    plan: free
+    buildCommand: uv sync --frozen --no-dev
+    startCommand: uv run python src/manage.py migrate --noinput && uv run python src/manage.py collectstatic --noinput && uv run gunicorn project.wsgi:application --chdir src --bind 0.0.0.0:$PORT --workers 2
+    healthCheckPath: /accounts/login/
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: DEBUG
+        value: "false"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trace-supply-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: trace-supply.onrender.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://trace-supply.onrender.com
+      - key: SECURE_HSTS_SECONDS
+        value: "31536000"
