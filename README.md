@@ -9,11 +9,12 @@ Shipment operations, from first scan to final delivery.
 | | Link |
 | --- | --- |
 | Project source | [GitHub repository](https://github.com/bhuvneshkumarprajapati/trace-supply) |
+| Public dashboard | [https://trace-supply.onrender.com/](https://trace-supply.onrender.com/) |
+| Public API explorer | [https://trace-supply.onrender.com/api/docs](https://trace-supply.onrender.com/api/docs) |
 | Local dashboard | [http://127.0.0.1:8000/](http://127.0.0.1:8000/) |
 | Local API explorer | [http://127.0.0.1:8000/api/docs](http://127.0.0.1:8000/api/docs) |
-| Public demo | Not deployed yet |
 
-> The local links work while Django's development server is running. They are not public URLs; a hosted deployment URL can be added here after deployment.
+> The dashboard requires an account. Render's free web service spins down after 15 minutes of inactivity, so the first request can take about a minute. The free PostgreSQL database expires after 30 days.
 
 ## What It Does
 
@@ -55,11 +56,19 @@ Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and sign in with the super
 
 ## Deploy on Render
 
-The repository includes a Render Blueprint in `render.yaml`. To deploy, create a **Blueprint** in the [Render dashboard](https://dashboard.render.com/blueprints) and select this repository. Render will provision the web service and PostgreSQL database, apply migrations, collect static files, and start Gunicorn.
+The repository includes a Render Blueprint in `render.yaml`, deployed at the public links above. It provisions the web service and PostgreSQL database, applies migrations, collects static files, and starts Gunicorn.
 
-After the first successful deploy, open the web service's Shell in Render and run `uv run python src/manage.py createsuperuser` to create the dashboard login.
+Free Render web services do not provide Shell access. To create the first dashboard account, copy the database's **External Database URL** from Render, then run these commands locally in PowerShell:
 
-The configured free plan is suitable for a public preview, not production: free web services can sleep when idle, and free PostgreSQL databases expire after 30 days. Choose paid plans for persistent production data and an always-on service. After Render finishes the first deploy, replace the Public demo entry at the top with the service URL shown in the Render dashboard.
+```powershell
+$env:DATABASE_URL = "<paste the External Database URL here>"
+uv run python src/manage.py createsuperuser
+Remove-Item Env:DATABASE_URL
+```
+
+The URL contains database credentials. Do not commit it or share it in chat. The command connects to the deployed database and creates your admin account there.
+
+The configured free plan is suitable for a public preview, not production. Choose paid plans for persistent database storage and an always-on service.
 
 ## API
 
