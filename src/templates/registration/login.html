@@ -1,0 +1,50 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in | Trace Supply</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'dashboard/css/app.css' %}">
+</head>
+<body class="login-page">
+  <main class="login-layout">
+    <section class="login-aside" aria-label="Trace Supply">
+      <a class="brand brand-login" href="/">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="brand-name">TRACE<span>SUPPLY</span></span>
+      </a>
+      <div class="login-aside-copy">
+        <span class="eyebrow">SUPPLY CHAIN OPERATIONS</span>
+        <p>Every handoff,<br>accounted for.</p>
+      </div>
+      <span class="login-aside-foot">OPERATIONS PLATFORM <b>01 / 01</b></span>
+    </section>
+    <section class="login-main">
+      <div class="login-card">
+        <span class="eyebrow">SECURE WORKSPACE</span>
+        <h1>Welcome back</h1>
+        <p class="login-copy">Sign in to your operations workspace.</p>
+        {% if form.non_field_errors %}
+          <div class="form-error" role="alert">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <form method="post" class="login-form">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
+          <label for="id_username">Username</label>
+          {{ form.username }}
+          {% if form.username.errors %}<div class="field-error">{{ form.username.errors }}</div>{% endif %}
+          <label for="id_password">Password</label>
+          {{ form.password }}
+          {% if form.password.errors %}<div class="field-error">{{ form.password.errors }}</div>{% endif %}
+          <button class="button button-primary login-submit" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+        </form>
+        <a class="login-api-link" href="/api/docs">API reference</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

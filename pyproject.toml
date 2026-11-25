@@ -1,0 +1,38 @@
+[project]
+name = "supply-chain-backend"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "celery>=5.4",
+    "django>=6.0",
+    "django-ninja>=1.6",
+    "pydantic>=2.0",
+    "python-decouple>=3.8",
+    "python-ulid>=3.0",
+    "svcs>=25.1",
+]
+
+[dependency-groups]
+dev = [
+    "django-stubs>=6.1.2",
+    "pyrefly>=0.42",
+    "pytest>=9.2.0",
+    "pytest-django>=4.14.0",
+    "ruff>=0.17.6",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint.per-file-ignores]
+"src/**/migrations/*.py" = ["RUF012"]
+
+[tool.pyrefly]
+project-includes = ["src"]
+python-version = "3.13"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "project.settings"
+python_files = ["test_*.py"]
+pythonpath = ["src"]
